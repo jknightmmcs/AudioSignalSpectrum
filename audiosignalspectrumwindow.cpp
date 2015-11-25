@@ -51,23 +51,20 @@ void AudioSignalSpectrumWindow::drawColumn(QPainter& painter, signal_data data, 
     int block = data.power_8bit_ / values_per_block;        
     for(int i = 0; i < block_count; i++)
     {            
+        Qt::GlobalColor colorFill = Qt::red;
+        if (i < block_count - 3) colorFill = Qt::green;
+        Qt::GlobalColor colorEmpty = Qt::darkRed;
+        if (i < block_count - 3) colorEmpty = Qt::darkGreen;
+
         if (i <= block && data.power_8bit_ != 0)
-        {
-            if (i <= block - 3)
-                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, Qt::green);
-            else
-                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, Qt::red);
+        {            
+                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, colorFill);
         }
-        else 
-        {
-            if (i <= block + 3)            
-                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, Qt::darkRed);
-            else
-                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, Qt::darkGreen);
+        else
+        {            
+                painter.fillRect(draw_x, height_shift + block_space_height * i, width, block_height, colorEmpty);
         }
-    }
-    
-    //painter.drawRect(draw_x, height_shift, width, height);
+    }        
     
     transform.reset();
     painter.setWorldTransform(transform);
