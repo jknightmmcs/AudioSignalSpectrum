@@ -14,8 +14,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        audiosignalspectrumwindow.cpp
+        audiosignalspectrumwindow.cpp \
+    inputdatadialog.cpp
 
-HEADERS  += audiosignalspectrumwindow.h
+HEADERS  += audiosignalspectrumwindow.h \
+    inputdatadialog.h
 
-FORMS    += audiosignalspectrumwindow.ui
+FORMS    += audiosignalspectrumwindow.ui \
+    inputdatadialog.ui
