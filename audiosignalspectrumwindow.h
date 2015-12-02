@@ -19,6 +19,7 @@ class AudioSignalSpectrumWindow : public QMainWindow
 public:
     explicit AudioSignalSpectrumWindow(QWidget *parent = 0);
     
+    void setData(std::vector<signal_data> &data);
 private slots:
     void on_input_data_action_triggered();
     

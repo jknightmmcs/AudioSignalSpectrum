@@ -1,4 +1,5 @@
 #include "audiosignalspectrumwindow.h"
+#include "inputdatadialog.h"
 #include <QPainter>
 #include <QMessageBox>
 #include <vector>
@@ -14,16 +15,6 @@ void AudioSignalSpectrumWindow::paintEvent(QPaintEvent *)
     QPainter painter(this);
     //Moved from 0, 0 by the height of the menu bar
     painter.drawPixmap(0, ui.menuBar->height(), pixmap_);
-}
-
-void AudioSignalSpectrumWindow::generateData(int N, double lower_bound, double upper_bound, std::vector<signal_data>* data)
-{
-    data -> clear();
-    for(int i = 0; i < N; i++)
-    {
-        signal_data single_data = {lower_bound + i * (upper_bound - lower_bound) / N, rand() % 256 };
-        data->push_back(single_data);
-    }
 }
 
 void AudioSignalSpectrumWindow::drawColumn(QPainter& painter, signal_data data, int position, int count, int w, int h)
@@ -78,19 +69,20 @@ void AudioSignalSpectrumWindow::drawData(QPainter& painter, std::vector<signal_d
         drawColumn(painter, data[i], i, data.size(), w, h);
 }
 
-void AudioSignalSpectrumWindow::on_input_data_action_triggered()
-{    
-    pixmap_ = QPixmap(ui.centralWidget->width(), ui.centralWidget->height());    
+void AudioSignalSpectrumWindow::setData(std::vector<signal_data>& data)
+{
+    pixmap_ = QPixmap(ui.centralWidget->width(), ui.centralWidget->height());
     pixmap_.fill(/*white*/);
     QPainter painter(&pixmap_);
-    
-    std::vector<signal_data> data;
-    generateData(15, 10, 100, &data);
-    std::sort(data.begin(), data.end(), [](signal_data& a, signal_data& b) 
-        { return a.frequency_khz_ < b.frequency_khz_; });    
     drawData(painter, data, pixmap_.width(), pixmap_.height());
-    
     repaint();
+
+}
+
+void AudioSignalSpectrumWindow::on_input_data_action_triggered()
+{
+    InputDataDialog input(this);
+    input.exec();
 }
 
 void AudioSignalSpectrumWindow::on_quit_action_triggered()
